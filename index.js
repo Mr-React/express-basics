@@ -22,8 +22,14 @@ app.get("/query-check-new", (req, res) => {
   const arr = Object.keys(req.query);
   console.log(req.query);
   res.send(
-    "your url query params is " + arr.map((item) => item + ": " + req.query[item])
+    "your url query params is " +
+      arr.map((item) => item + ": " + req.query[item])
   );
+});
+
+app.post("/add", (req, res) => {
+  console.log(req.body);
+  res.status(201).send("add data is name: " + req.body.name + " and email: " + req.body.email);
 });
 
 app.listen(port, () => {
