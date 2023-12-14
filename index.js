@@ -6,31 +6,49 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
+// local store
+const users = [
+  {
+    name: "John",
+    kidneys: [
+      {
+        healthy: false,
+      },
+    ],
+  },
+];
+
 app.get("/", (req, res) => {
-  console.log(req.body);
-  res.send("Hello World!");
+  const johnKidneys = users[0].kidneys;
+  const numberOfKidneys = johnKidneys.length;
+  let numberOfHealtyKidneys = 0;
+  for (let i = 0; i < johnKidneys.length; i++) {
+    if (johnKidneys[i].healthy) {
+      numberOfHealtyKidneys += 1;
+    }
+  }
+
+  const numberOfUnhealtyKidneys = numberOfKidneys - numberOfHealtyKidneys;
+
+  res.json({
+    numberOfKidneys,
+    numberOfHealtyKidneys,
+    numberOfUnhealtyKidneys,
+  });
 });
 
-// http://localhost:3000/query-check/?id=30 hit this url on browser or poastman
-app.get("/query-check", (req, res) => {
-  console.log(req.query.id);
-  res.send("your url query(id) is " + req.query.id);
+app.post("/", (req, res) => {
+  const isHealthy = req.body.isHealthy;
+  users[0].kidneys.push({
+    healthy: isHealthy,
+  });
+
+  res.json({
+    msg: "Done!",
+  });
 });
 
-// http://localhost:3000/query-check-new/?id=321&name=onkar hit this url on browser or poastman
-app.get("/query-check-new", (req, res) => {
-  const arr = Object.keys(req.query);
-  console.log(req.query);
-  res.send(
-    "your url query params is " +
-      arr.map((item) => item + ": " + req.query[item])
-  );
-});
 
-app.post("/add", (req, res) => {
-  console.log(req.body);
-  res.status(201).send("add data is name: " + req.body.name + " and email: " + req.body.email);
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port} \nhttp://localhost:3000/`);
