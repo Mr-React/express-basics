@@ -70,6 +70,16 @@ app.post("/", (req, res) => {
   });
 });
 
+// Global Catches => It helps you to give the user a better error message
+// This is a special type of middleware function is Express that has four arguments instead
+// of three(`(err, req, res, next)`). Express recognizes it as an error-handling middleware
+// because of these four arguments
+app.use(function (err, req, res, next) {
+  res.json({
+    msg: "Smoething is up with your server",
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port} \nhttp://localhost:3000/`);
 });
