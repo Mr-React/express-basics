@@ -18,6 +18,28 @@ const users = [
   },
 ];
 
+app.get("/health-checkup", (req, res) => {
+  const kidneyId = req.query.kidneyId;
+  const username = req.headers.username;
+  const password = req.headers.password;
+
+  if (username != "Onkar" || password != "Onkar123") {
+    res.status(403).json({
+      msg: "User doesn't exist",
+    });
+    return;
+  }
+
+  if (kidneyId != 1 && kidneyId != 2) {
+    res.status(411).json({
+      msg: "Wrong inputs",
+    });
+    return;
+  }
+
+  res.send("You are healthy");
+});
+
 app.get("/", (req, res) => {
   const johnKidneys = users[0].kidneys;
   const numberOfKidneys = johnKidneys.length;
@@ -47,8 +69,6 @@ app.post("/", (req, res) => {
     msg: "Done!",
   });
 });
-
-
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port} \nhttp://localhost:3000/`);
