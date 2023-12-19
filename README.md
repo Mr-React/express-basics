@@ -16,3 +16,4 @@
 - installed nodemon using npm i nodemon command
 - run npx nodemon index.js command to start server using nodemon
 - installed body-parser using npm i body-parser to parser request body
+- install zod for req validation using command npm install zod

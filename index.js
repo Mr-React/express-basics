@@ -1,10 +1,13 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
+const zod = require("zod");
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
+// to enable "body" parser
+app.use(express.urlencoded({ extended: false }));
 
 // local store
 const users = [
@@ -17,6 +20,17 @@ const users = [
     ],
   },
 ];
+
+const schema = zod.array(zod.number());
+app.post("/health-check-zod", (req, res) => {
+  const kidneys = req.body.kidneys;
+  console.log(req.body);
+  const response = schema.safeParse(kidneys);
+
+  res.send({
+    response,
+  });
+});
 
 app.get("/health-checkup", (req, res) => {
   const kidneyId = req.query.kidneyId;
